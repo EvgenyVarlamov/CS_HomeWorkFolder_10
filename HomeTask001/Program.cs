@@ -26,10 +26,10 @@ SortingNumbersInGroupS(array);
 PrintGroup(array);
 Console.WriteLine();
 
-int Input(string text)
+long Input(string text)
 {
     Console.Write(text);
-    return Convert.ToInt32(Console.ReadLine());
+    return Convert.ToInt64(Console.ReadLine());
 }
 
 long GroupCalculation(long value)
@@ -56,7 +56,6 @@ long[,] FillGroup(long value, long count)
     {
         for (long j = 0; j < value; j++)
         {
-            result[i, 0] = Convert.ToInt64(Math.Pow(2, i));
             long temp = Convert.ToInt64(Math.Pow(2, i) + j);
             if (temp <= value)
             {
@@ -87,7 +86,6 @@ long[,] SortingNumbersInGroupS(long[,] result)
                 {
                     result[i, k] = 0;
                 }
-
             }
         }
     }
