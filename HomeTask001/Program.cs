@@ -19,44 +19,93 @@
 Группа 6: 32 48
 */
 
-long number = 50;
+long number = Input("Введите число N: ");
+long groupQuantity = GroupCalculation(number);
+long[,] array = FillGroup(number, groupQuantity);
+SortingNumbersInGroupS(array);
+PrintGroup(array);
+Console.WriteLine();
 
-long check = 1;
-long index = 0;
-for (long i = 1; i <= number; i++)
+int Input(string text)
 {
-    if (i % check == 0)
-    {
-        index++;
-        Console.WriteLine();
-        Console.Write("Группа " + index + ": " + i);
-        check = i;
-    }
-    else
-    {
-        Console.Write(" " + i);
-    }
+    Console.Write(text);
+    return Convert.ToInt32(Console.ReadLine());
 }
 
-Console.WriteLine();
-Console.WriteLine($"Итого {index} групп, в каждой из которых числа друг на друга не делятся");
-Console.WriteLine();
-Console.Write($"Простые числа от 1 до {number}: 1 ");
-
-for (long i = 2; i < number; i++)
+long GroupCalculation(long value)
 {
-    bool flag = true;
-    for (long j = 2; j < i; j++)
+    long check = 1;
+    long count = 0;
+    for (long i = 1; i <= value; i++)
     {
-        if (i % j == 0)
+        if (i % check == 0)
         {
-            flag = !flag;
-            break;
+            count++;
+            check = i;
         }
     }
-    if (flag)
+    Console.WriteLine($"Итого {count} групп, в каждой из которых числа друг на друга не делятся");
+    return count;
+}
+
+long[,] FillGroup(long value, long count)
+{
+    long[,] result = new long[count, value];
+
+    for (long i = 0; i < count; i++)
     {
-        Console.Write(i + " ");
+        for (long j = 0; j < value; j++)
+        {
+            result[i, 0] = Convert.ToInt64(Math.Pow(2, i));
+            long temp = Convert.ToInt64(Math.Pow(2, i) + j);
+            if (temp <= value)
+            {
+                result[i, j] = temp;
+            }
+        }
+    }
+    return result;
+}
+
+long[,] SortingNumbersInGroupS(long[,] result)
+{
+    for (int i = 0; i < result.GetLength(0); i++)
+    {
+        for (long j = 0; j < result.GetLength(1); j++)
+        {
+            for (long k = 0; k < result.GetLength(1); k++)
+            {
+                for (long l = 0; l < result.GetLength(0); l++)
+                {
+                    if (i < l && result[i, j] == result[l, k])
+                    {
+                        result[l, k] = 0;
+                    }
+                }
+
+                if (result[i, j] != 0 && result[i, j] != result[i, k] && result[i, k] % result[i, j] == 0)
+                {
+                    result[i, k] = 0;
+                }
+
+            }
+        }
+    }
+    return result;
+}
+
+void PrintGroup(long[,] result)
+{
+    for (int i = 0; i < result.GetLength(0); i++)
+    {
+        Console.Write($"Группа {i + 1}: ");
+        for (long j = 0; j < result.GetLength(1); j++)
+        {
+            if (result[i, j] != 0)
+            {
+                Console.Write(result[i, j] + " ");
+            }
+        }
+        Console.WriteLine();
     }
 }
-Console.WriteLine();
